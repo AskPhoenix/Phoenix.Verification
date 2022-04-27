@@ -8,7 +8,7 @@ namespace Phoenix.Verification.Base
     public abstract class ContextTestsBase : ConfigurationTestsBase, IDisposable
     {
         protected readonly PhoenixContext _phoenixContext;
-        protected readonly ApplicationDbContext _applicationContext;
+        protected readonly ApplicationContext _applicationContext;
 
         public ContextTestsBase()
             : base()
@@ -20,7 +20,7 @@ namespace Phoenix.Verification.Base
                 .UseSqlServer(phoenixConnection)
                 .Options);
 
-            _applicationContext = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
+            _applicationContext = new ApplicationContext(new DbContextOptionsBuilder<ApplicationContext>()
                 .UseLazyLoadingProxies()
                 .UseSqlServer(phoenixConnection)
                 .Options);
