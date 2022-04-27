@@ -4,6 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>3.0.0-alpha.0</Version>
+    <Authors>AskPhoenix</Authors>
+    <Company>AskPhoenix</Company>
+    <Description>A Library with tools for the verification of AskPhoenix projects</Description>
+    <Copyright>AskPhoenix 2022</Copyright>
+    <PackageProjectUrl>https://www.askphoenix.gr/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AskPhoenix/Phoenix.Verification</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
