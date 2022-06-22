@@ -12,6 +12,9 @@ namespace Phoenix.Verification.Base
             // Attention to the json file path if the derived class is located in a subfolder
             _configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddJsonFile("appsettings.Staging.json", optional: true)
+                .AddJsonFile("appsettings.Production.json", optional: true)
                 .Build();
         }
     }
