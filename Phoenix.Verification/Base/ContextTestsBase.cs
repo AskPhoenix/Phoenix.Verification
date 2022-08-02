@@ -7,8 +7,8 @@ namespace Phoenix.Verification.Base
 {
     public abstract class ContextTestsBase : ConfigurationTestsBase, IDisposable
     {
-        protected readonly PhoenixContext _phoenixContext;
-        protected readonly ApplicationContext _applicationContext;
+        protected PhoenixContext _phoenixContext;
+        protected ApplicationContext _applicationContext;
 
         public ContextTestsBase()
             : base()
@@ -28,8 +28,26 @@ namespace Phoenix.Verification.Base
 
         public void Dispose()
         {
-            _phoenixContext.Dispose();
-            _applicationContext.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_phoenixContext is not null)
+                {
+                    _phoenixContext.Dispose();
+                    _phoenixContext = null!;
+                }
+
+                if(_applicationContext is not null)
+                {
+                    _applicationContext.Dispose();
+                    _applicationContext = null!;
+                }
+            }
         }
     }
 }
