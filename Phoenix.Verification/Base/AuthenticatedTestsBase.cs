@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace Phoenix.Verification.Base
@@ -15,17 +14,13 @@ namespace Phoenix.Verification.Base
             string phonenum = _configuration["Auth:PhoneNum"];
             string password = _configuration["Auth:Password"];
 
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
             var json = JsonConvert.SerializeObject(new { phone = phonenum, password });
             var body = new StringContent(json, Encoding.UTF8, "application/json");
 
             var resp = _client.PostAsync("https://auth.askphoenix.gr/basic", body).Result;
+            var token = JsonConvert.DeserializeObject<string>(resp.Content.ReadAsStringAsync().Result);
 
-            var token = resp.Content.ReadAsStringAsync().Result;
-
-            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+            _client.DefaultRequestHeaders.Authorization = new("Bearer", token);
         }
 
         protected static StringContent Encode<TContent>(TContent content)
@@ -44,6 +39,12 @@ namespace Phoenix.Verification.Base
             return await DecodeAsync<TContent>(resp);
         }
 
+        public async Task<TContent?> PostAsync<TContent>(string requestUri)
+        {
+            var resp = await _client.PostAsync(requestUri, null);
+            return await DecodeAsync<TContent>(resp);
+        }
+
         public async Task<TContent?> GetAsync<TContent>(string requestUri)
         {
             var resp = await _client.GetAsync(requestUri);
@@ -53,6 +54,12 @@ namespace Phoenix.Verification.Base
         public async Task<TContent?> PutAsync<TContent>(string requestUri, TContent content)
         {
             var resp = await _client.PutAsync(requestUri, Encode(content));
+            return await DecodeAsync<TContent>(resp);
+        }
+
+        public async Task<TContent?> PutAsync<TContent>(string requestUri)
+        {
+            var resp = await _client.PutAsync(requestUri, null);
             return await DecodeAsync<TContent>(resp);
         }
 
