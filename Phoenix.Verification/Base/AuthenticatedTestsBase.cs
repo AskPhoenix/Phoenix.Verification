@@ -18,7 +18,7 @@ namespace Phoenix.Verification.Base
             var body = new StringContent(json, Encoding.UTF8, "application/json");
 
             var resp = _client.PostAsync("https://auth.askphoenix.gr/basic", body).Result;
-            var token = JsonConvert.DeserializeObject<string>(resp.Content.ReadAsStringAsync().Result);
+            var token = resp.Content.ReadAsStringAsync().Result;
 
             _client.DefaultRequestHeaders.Authorization = new("Bearer", token);
         }
