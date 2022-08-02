@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
 namespace Phoenix.Verification.Base
 {
-    public class AuthenticationTestsBase : ConfigurationTestsBase
+    public class AuthenticatedTestsBase : ConfigurationTestsBase
     {
         protected static readonly HttpClient _client = new();
         
-        public AuthenticationTestsBase()
+        public AuthenticatedTestsBase()
             : base()
         {
             string phonenum = _configuration["Auth:PhoneNum"];
@@ -55,10 +56,10 @@ namespace Phoenix.Verification.Base
             return await DecodeAsync<TContent>(resp);
         }
 
-        public async Task<TContent?> DeleteAsync<TContent>(string requestUri)
+        public async Task<HttpStatusCode> DeleteAsync(string requestUri)
         {
             var resp = await _client.DeleteAsync(requestUri);
-            return await DecodeAsync<TContent>(resp);
+            return resp.StatusCode;
         }
     }
 }
